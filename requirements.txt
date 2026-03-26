@@ -23,3 +23,6 @@ ipykernel
 openwakeword
 numpy
 vosk
+SpeechRecognition
+langchain-ollama
+langchain-google-genai
