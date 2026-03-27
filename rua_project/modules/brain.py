@@ -1,61 +1,9 @@
-# import os
-# from langchain_ollama import ChatOllama
-# from langchain_google_genai import ChatGoogleGenerativeAI
-# from dotenv import load_dotenv
-# import os
-
-# load_dotenv()  
-# # Initialize both models
-# try:
-#     cloud_llm = ChatGoogleGenerativeAI(
-#         model="gemini-2.5-flash", 
-#         google_api_key=os.getenv("GOOGLE_API_KEY"),
-#         max_retries=0  # Forces immediate failure on quota errors
-#     )
-
-#     local_llm = ChatOllama(model="llama3.2", temperature=0.1)
-
-
-# except Exception as e:
-#     print("ERROR initializing LLMS :\n\n ",e)
-
-
-
-# def think_and_stream(text, memory_context):
-#     messages = [
-#         {"role": "system", "content": f"You are RUA. Witty, fast, brief. No markdown. < 20 words. Memory Context: {memory_context}"},
-#         {"role": "user", "content": text}
-#     ]
-
-#     # Decide initial routing: try cloud if query is > 10 chars
-#     try_cloud = len(text) > 10
-
-#     if try_cloud:
-#         try:
-#             # Attempt Cloud LLM first
-#             for chunk in cloud_llm.stream(messages):
-#                 yield chunk.content if hasattr(chunk, 'content') else str(chunk)
-#             return  # If successful, exit the function so it doesn't run the local LLM
-            
-#         except Exception as e:
-#             # If we hit a 429 Quota Error or network drop, catch it and print a warning
-#             print("\n⚠️ Cloud limit reached. Falling back to Local Llama...", end="", flush=True)
-#             # Do NOT return here. Let the code continue down to the local_llm block below.
-
-#     # ---------------------------------------------------------
-#     # LOCAL LLM FALLBACK (Runs if Cloud fails OR if query <= 10)
-#     # ---------------------------------------------------------
-#     try:
-#         for chunk in local_llm.stream(messages):
-#             yield chunk.content if hasattr(chunk, 'content') else str(chunk)
-#     except Exception as e:
-#         yield "System error. My local brain is offline."
-
 import os
 from langchain_ollama import ChatOllama
 from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 import os
+import time  # NEW IMPORT
 
 load_dotenv()  
 # Initialize both models
@@ -73,7 +21,8 @@ except Exception as e:
     print("ERROR initializing LLMS :\n\n ",e)
 
 
-def think_and_stream(text, memory_context):
+# Add chat_history as the third parameter
+def think_and_stream(text, memory_context, chat_history):
     # ---------------------------------------------------------
     # 1. THE LOCAL INSTRUCTION (The Secret Code)
     # ---------------------------------------------------------
@@ -81,13 +30,13 @@ def think_and_stream(text, memory_context):
     CRITICAL RULE: If the user asks for complex coding, deep factual knowledge, or a task you are unsure how to do perfectly, your VERY FIRST word MUST be "ESCALATE". 
     If you CAN answer it yourself (like basic chat, greetings, or simple tasks), answer normally. Keep it witty, brief, and under 20 words."""
 
-    messages = [
-        {"role": "system", "content": local_system_prompt},
-        {"role": "user", "content": text}
-    ]
+    # Build the message array dynamically: System -> History -> Current Prompt
+    messages = [{"role": "system", "content": local_system_prompt}]
+    messages.extend(chat_history)  # Inject the short-term memory here
+    messages.append({"role": "user", "content": text})
 
     needs_cloud = False
-
+    
     # ---------------------------------------------------------
     # 2. LOCAL ATTEMPT & INTERCEPTION
     # ---------------------------------------------------------
@@ -130,3 +79,39 @@ def think_and_stream(text, memory_context):
                 yield chunk.content if hasattr(chunk, 'content') else str(chunk)
         except Exception as e:
             yield " Sorry boss, both my local and cloud brains are fried right now."
+
+
+
+def update_long_term_memory(user_text, rua_brain):
+    """Silent background task to extract facts without slowing down the chat."""
+    prompt = f"""Analyze the following user statement: "{user_text}"
+    If the user is stating a permanent fact about themselves (like their name, age, job, or likes), extract it as a short, 3-to-5 word fact (e.g., "User's name is Anish").
+    If it is just normal conversation, a command, or a question, reply with EXACTLY the word "NONE".
+    Answer:"""
+    
+    try:
+        import time # Ensured import inside the thread just in case
+        
+        response = local_llm.invoke(prompt)
+        fact = response.content.strip()
+        
+        # DEBUG: This will print exactly what Llama generated so we can see its "thoughts"
+        print(f"\n🕵️ [Debug - Raw LLM Memory Output]: {fact}")
+        
+        if "NONE" not in fact.upper() and len(fact) > 3:
+            # Clean up Llama's tendency to be chatty (e.g., "Here is the fact: User is a boy")
+            if ":" in fact:
+                fact = fact.split(":")[-1].strip()
+                
+            # Strip out weird markdown, quotes, or newlines it might add
+            fact = fact.replace('"', '').replace('*', '').split('\n')[0].strip()
+            
+            # Save it
+            key = f"fact_{int(time.time())}"
+            rua_brain.learn_fact(key, fact)
+            print(f"\n🧠 [Memory Stored Permanently]: {fact}")
+            print("\n💤 RUA is sleeping. Say 'Jarvis' to wake...") # Refresh the terminal prompt
+            
+    except Exception as e:
+        # Stop hiding errors!
+        print(f"\n⚠️ Memory Thread Error: {e}")
