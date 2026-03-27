@@ -26,3 +26,4 @@ vosk
 SpeechRecognition
 langchain-ollama
 langchain-google-genai
+pygame

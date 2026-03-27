@@ -1,45 +1,36 @@
 import os
-from pathlib import Path
-import logging
 
-# Configure logging
-logging.basicConfig(level=logging.INFO, format='[%(asctime)s]: %(message)s:')
+# Project structure definition
+structure = {
+    "rua_project": {
+        "main.py": "",
+        "utils.py": "",
+        "modules": {
+            "__init__.py": "",
+            "wake_word.py": "",
+            "ear.py": "",
+            "brain.py": "",
+            "memory.py": "",
+            "voice.py": ""
+        }
+    }
+}
 
-project_name = "rua_project"
 
-# List of files outlining the project structure
-list_of_files = [
-    "research/01_wake_word.ipynb",
-    "research/02_stt_streaming.ipynb",
-    "research/03_llm_routing.ipynb",
-    "research/04_tts_precision.ipynb",
-    "research/05_integrations.ipynb",
-    "src/__init__.py",
-    "src/core/__init__.py",
-    "src/core/pipeline.py",
-    "src/core/logger.py",
-    "src/modules/__init__.py",
-    "src/modules/ear.py",
-    "src/modules/brain.py",
-    "src/modules/voice.py",
-    "src/modules/hands.py",
-    "src/main.py",
-    "logs/system.log"
-]
+def create_structure(base_path, tree):
+    for name, content in tree.items():
+        path = os.path.join(base_path, name)
 
-for filepath in list_of_files:
-    filepath = Path(filepath)
-    filedir, filename = os.path.split(filepath)
+        if isinstance(content, dict):
+            # Create directory
+            os.makedirs(path, exist_ok=True)
+            create_structure(path, content)
+        else:
+            # Create file
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
 
-    # Create directories if they don't exist
-    if filedir != "":
-        os.makedirs(filedir, exist_ok=True)
-        logging.info(f"Creating directory: {filedir} for the file: {filename}")
 
-    # Create empty files if they don't exist or are empty
-    if (not os.path.exists(filepath)) or (os.path.getsize(filepath) == 0):
-        with open(filepath, "w") as f:
-            pass
-            logging.info(f"Creating empty file: {filepath}")
-    else:
-        logging.info(f"{filename} already exists")
+if __name__ == "__main__":
+    create_structure(".", structure)
+    print("✅ RUA project structure created successfully!")

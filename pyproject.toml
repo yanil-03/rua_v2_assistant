@@ -27,6 +27,7 @@ dependencies = [
     "openwakeword>=0.4.0",
     "pvporcupine>=4.0.2",
     "pyaudio>=0.2.14",
+    "pygame>=2.6.1",
     "python-dotenv>=1.2.2",
     "pywhatkit>=5.4",
     "requests>=2.33.0",
