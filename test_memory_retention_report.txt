@@ -1,0 +1,29 @@
+🧠 RUA MEMORY RETENTION & PRUNING TEST - 2026-03-27 20:50:08
+======================================================================
+
+▶️ STEP 1: Injecting Simulated Time-Travel Data into RUA's Memory...
+  -> Generated: 2026-03-17.json (Age: 10 days)
+  -> Generated: 2026-03-19.json (Age: 8 days)
+  -> Generated: 2026-03-20.json (Age: 7 days)
+  -> Generated: 2026-03-22.json (Age: 5 days)
+  -> Generated: 2026-03-26.json (Age: 1 days)
+  -> Generated: 2026-03-27.json (Age: 0 days)
+
+▶️ STEP 2: Waking up Cognitive Hub (Triggers auto-prune)...
+
+▶️ STEP 3: Verifying Pruning Accuracy...
+  ✅ SUCCESS: 2026-03-17.json (Age: 10 days) was successfully DELETED.
+  ✅ SUCCESS: 2026-03-19.json (Age: 8 days) was successfully DELETED.
+  ✅ SUCCESS: 2026-03-20.json (Age: 7 days) was properly RETAINED.
+  ✅ SUCCESS: 2026-03-22.json (Age: 5 days) was properly RETAINED.
+  ✅ SUCCESS: 2026-03-26.json (Age: 1 days) was properly RETAINED.
+  ✅ SUCCESS: 2026-03-27.json (Age: 0 days) was properly RETAINED.
+
+▶️ STEP 4: Verifying Data Extraction (get_brain_dump)...
+  -> Raw Dump Output:
+     RUA Memory Dump: FACTS: {'test_fact_1774617369': 'Diagnostic test successful', 'test_fact_1774617459': 'Diagnostic test successful', 'test_fact_1774623089': 'Diagnostic test successful', 'fact_1774624122': 'Spicy ramen preference.'}. RECENT CHAT HISTORY: [User: Simulated user message from 7 days ago. | RUA: Simulated RUA response from 7 days ago.] [User: Simulated user message from 5 days ago. | RUA: Simulated RUA response from 5 days ago.] [User: Simulated user message from 1 days ago. | RUA: Simulated RUA response from 1 days ago.] [User: Simulated user message from 0 days ago. | RUA: Simulated RUA response from 0 days ago.] 
+
+  ✅ SUCCESS: Brain dump successfully extracted history from valid recent files, ignoring old ones.
+
+======================================================================
+🏁 MEMORY RETENTION TEST COMPLETE. Report saved to test_memory_retention_report.txt

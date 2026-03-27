@@ -88,3 +88,27 @@ def get_dir_size(path='.'):
 
 if __name__ == "__main__":
     run_memory_diagnosis()
+
+
+
+# PERFORMANCE REPORT:-----------------
+
+# 🧠 RUA MEMORY SYSTEM DIAGNOSTIC
+# ========================================
+# ✅ Hub Initialization: SUCCESS
+# ✅ Folder Structure: Verified
+# ✅ User Data Persistence: Saved
+
+# ⏳ Testing 7-Day Rolling Logic...
+# ✅ 7-Day Pruning: SUCCESS (Old file deleted, New file kept)
+
+# 📊 PERFORMANCE REPORT
+# --------------------
+# Total Diagnostic Run:    0.0081s
+# Context Retrieval Speed: 0.0004s
+# Memory Directory Size:   0.15 KB
+# --------------------
+
+# 💡 Brain Dump Preview (What RUA sees):
+# > RUA Memory Dump: FACTS: {'test_fact_1774617369': 'Diagnostic test successful'}. RECENT CHAT HISTORY: [User: Diagnostic Query | RUA: Diagnostic Respons...     
+# ========================================

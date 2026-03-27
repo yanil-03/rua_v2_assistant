@@ -1,12 +1,7 @@
 [
     {
-        "time": "2026-03-27T18:46:09.561414",
-        "user": "Diagnostic Query",
-        "rua": "Diagnostic Response"
-    },
-    {
-        "time": "2026-03-27T18:47:39.872283",
-        "user": "Diagnostic Query",
-        "rua": "Diagnostic Response"
+        "time": "2026-03-27T14:30:00",
+        "user": "Simulated user message from 0 days ago.",
+        "rua": "Simulated RUA response from 0 days ago."
     }
 ]
