@@ -1,0 +1,35 @@
+i want that when i command for a new procject rua will create a folder named that project and and asks me questions regarding the project and further it will research on that project in background so it doesnt effect the performance of rua and saves all the research repot in that folder in text format
+can we achieve this ?
+
+The Project Architect Module
+Next Step
+Would you like me to add a Web Search tool to the background researcher so it can look up real-time documentation and libraries for your projects?
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+You said
+add this also like when i command search for ________ it will reseach for the title and give me the results also tell me that can we achieve this by our local_llm or not
+
+Gemini said
+To add a search feature, we will integrate a web-scraping tool into your pipeline. This allows RUA to "break out" of its training data and look at the live internet.
+
+1. Create the Research Module
+We will use the ddg3 (DuckDuckGo) library because it’s fast, free, and doesn't require an API key. First, install it in your terminal:
+pip install duckduckgo-search
+
+2. Update the Orchestrator (main.py)
+Add the "search for" keyword to your command interceptor.
+
+Why this setup is better:
+Hybrid Power: The script handles the internet connection (which the local LLM can't do), and then the LLM handles the "thinking" (reading the results).
+
+No Lag: By using duckduckgo-search, you get results in milliseconds without setting up complex Google Search API keys.
+
+Accuracy: RUA will now be able to answer questions about events that happened today, rather than just things it was trained on.
+
+Your Next Step
+Would you like me to show you how to make the search results save automatically to your project folders if you are currently in "Project Mode"?
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
