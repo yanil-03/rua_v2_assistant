@@ -33,3 +33,7 @@ Your Next Step
 Would you like me to show you how to make the search results save automatically to your project folders if you are currently in "Project Mode"?
 
 ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+i want that rua remembers our last 7-15 days conversations so that is there anything i want to get remainded in future or want to extract information of those past conversations can be don with ease and the thing about my lkes dislikes my preferences basically can be storedin a seperate file called user_preferences or anything like that so that those can't get mixed 
+i want this feature to be in a seperate python file in a folder named skills so that it cannot mixed up with core memory logics
